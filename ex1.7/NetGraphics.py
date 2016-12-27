@@ -41,7 +41,7 @@ def Display(image_file='tmpf.jpg'):
 
 #: circular graph layouts
 
-def GenerateCircleGraphImage(graph, imfile, windowSize=800,
+def GenerateCircleGraphImage(graph, imfile, windowSize=480,
                              dotsize=4, windowMargin=0.02):
     """creates an image file in the specified imfile and
     returns the PIL image object, laying out the specified graph in a
@@ -52,7 +52,7 @@ def GenerateCircleGraphImage(graph, imfile, windowSize=800,
     center = windowSize / 2.
     radius = (1. - 2 * windowMargin) * windowSize / 2.
 
-    all_nodes = graph.GetNodes()
+    all_nodes = graph.get_nodes()
     all_nodes.sort()
     L = len(all_nodes)
     # Create a dictionary that maps nodes to their positions around the circle
@@ -67,7 +67,7 @@ def GenerateCircleGraphImage(graph, imfile, windowSize=800,
 
     # Draw the lines between the nodes
     for node in all_nodes:
-        neighbors = graph.GetNeighbors(node)
+        neighbors = graph.get_neighbors(node)
         for neighbor in neighbors:
             # We want to draw bonds only once, even though two bonds connect
             #   node and neighbor.  We can test "if neighbor > node" to
@@ -113,7 +113,7 @@ def GenerateCircleGraphImageWithWeights(graph, imfile,
     center = windowSize / 2.
     radius = (1. - 2 * windowMargin) * windowSize / 2.
     # Nodes for SWG are integers 0<=node<L
-    all_nodes = graph.GetNodes()
+    all_nodes = graph.get_nodes()
     all_nodes.sort()
     L = len(all_nodes)
     if node_scale is None:
@@ -129,7 +129,7 @@ def GenerateCircleGraphImageWithWeights(graph, imfile,
         nodePosition[node] = (x, y)
     for node in all_nodes:
         x, y = nodePosition[node]
-        neighbors = graph.GetNeighbors(node)
+        neighbors = graph.get_neighbors(node)
         for neighbor in neighbors:
             # Only draw bonds once (see above)
             if neighbor > node:
@@ -219,7 +219,7 @@ def DrawSquareNetworkBonds(graph, nodelists=None,
     it's like (x, -y) ]"""
     # Set up cluster of all nodes in network if no clusters given
     if nodelists is None:
-        nodelists = [graph.GetNodes()]
+        nodelists = [graph.get_nodes()]
     # Set up image file
     if imfile is None:
         imfile = tempfile.mktemp()  # make unique filename in /tmp
@@ -230,8 +230,8 @@ def DrawSquareNetworkBonds(graph, nodelists=None,
     # Nodes = (ix, iy) running from (0,0) to (L-1,L-1)
     # Won't always work for site percolation: 
     # Assumes entire row and column of nodes not missing
-    L = max(max([node[0] for node in graph.GetNodes()]), \
-            max([node[1] for node in graph.GetNodes()])) + 1.0
+    L = max(max([node[0] for node in graph.get_nodes()]), \
+            max([node[1] for node in graph.get_nodes()])) + 1.0
     # Default dot size and line width depends on L
     if dotsize is None:
         dotsize = max((1 - 2 * windowMargin) * imsize / (4 * L), 1)
@@ -267,7 +267,7 @@ def DrawSquareNetworkBonds(graph, nodelists=None,
                 draw.polygon(polyFromLine, fill=color)
 
             # Find neighbors
-            neighbors = graph.GetNeighbors(node)
+            neighbors = graph.get_neighbors(node)
             for neighbor in neighbors:
                 # Draw each bond once: only if i>j
                 if neighbor <= node:
@@ -330,13 +330,13 @@ def DrawSquareNetworkSites(graph, nodelists=None, scale=0, imsize=800,
     it's like (x, -y) ]"""
     # Set up cluster of all nodes in network if no clusters given
     if nodelists is None:
-        nodelists = [graph.GetNodes()]
+        nodelists = [graph.get_nodes()]
     # Set up image file
     if imfile is None:
         imfile = tempfile.mktemp()  # make unique filename in /tmp
         imfile += "_square_network_sites.png"
-    L = max(max([node[0] for node in graph.GetNodes()]),
-            max([node[1] for node in graph.GetNodes()])) + 1
+    L = max(max([node[0] for node in graph.get_nodes()]),
+            max([node[1] for node in graph.get_nodes()])) + 1
     if (scale == 0):
         scale = max(1, int(imsize / L))  # Size of squares for each node
     # Background white (in case some nodes missing)
@@ -382,15 +382,15 @@ def DrawTriangularNetworkSites(graph, nodelists=None, L=0,
     the imfile argument."""
     # Set up cluster of all nodes in network if no clusters given
     if nodelists is None:
-        nodelists = [graph.GetNodes()]
+        nodelists = [graph.get_nodes()]
     # Set up image file
     if imfile is None:
         imfile = tempfile.mktemp()  # make unique filename in /tmp
         imfile += "_square_network_sites.png"
     # If L=0, try to guess L from size of array
     if L == 0:
-        L = max(max([node[0] for node in graph.GetNodes()]),
-                max([node[1] for node in graph.GetNodes()])) + 1
+        L = max(max([node[0] for node in graph.get_nodes()]),
+                max([node[1] for node in graph.get_nodes()])) + 1
     # if scale is zero, set it to a size so the system is roughly imsize
     if (scale == 0):
         scale = max(1, int(imsize / L))  # Size of triangles for each node
