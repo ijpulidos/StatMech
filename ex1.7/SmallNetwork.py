@@ -53,9 +53,8 @@ class SmallNetwork(object):
         Adds a new node to the system (if it is not already there)
         :return: None
         """
-        tmp_nodes.append(len(self.nodes))  # Append the next consecutive integer as a node
+        self.nodes.append(len(self.nodes))  # Append the next consecutive integer as a node
         self.L += 1  # Increase number of nodes L by an unit
-        self.nodes = tmp_nodes
 
     def add_edge(self, node1, node2):
         """
