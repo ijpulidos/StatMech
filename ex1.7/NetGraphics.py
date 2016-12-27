@@ -1,5 +1,5 @@
 import numpy, os, random
-import Image, ImageDraw
+from PIL import Image, ImageDraw
 import tempfile
 
 
@@ -18,7 +18,7 @@ def Display(image_file='tmpf.jpg'):
     if os_name == 'nt':  # Windows
         try:
             os.system('mspaint %s &' % image_file)
-            except:
+        except:
             raise OSError("Cannot display %s with Windows mspaint" % image_file)
     else:
         os_uname = os.uname()
@@ -31,10 +31,10 @@ def Display(image_file='tmpf.jpg'):
         try:
             os.system('display %s &' % image_file)
         except:
-            raise OSError, "Cannot display %s with ImageMagick display. ImageMagick display requires a running X server." % \
-                           image_file
+            raise OSError("Cannot display %s with ImageMagick display. ImageMagick display requires a running X server." % \
+                           image_file)
     else:
-        raise OSError, "no known display function for OS %s" % os_name
+        raise OSError("no known display function for OS %s" % os_name)
 
 
 # -----------------------------------------------------------------------
@@ -335,7 +335,7 @@ def DrawSquareNetworkSites(graph, nodelists=None, scale=0, imsize=800,
     if imfile is None:
         imfile = tempfile.mktemp()  # make unique filename in /tmp
         imfile += "_square_network_sites.png"
-    L = max(max([node[0] for node in graph.GetNodes()]), \
+    L = max(max([node[0] for node in graph.GetNodes()]),
             max([node[1] for node in graph.GetNodes()])) + 1
     if (scale == 0):
         scale = max(1, int(imsize / L))  # Size of squares for each node
@@ -389,7 +389,7 @@ def DrawTriangularNetworkSites(graph, nodelists=None, L=0,
         imfile += "_square_network_sites.png"
     # If L=0, try to guess L from size of array
     if L == 0:
-        L = max(max([node[0] for node in graph.GetNodes()]), \
+        L = max(max([node[0] for node in graph.GetNodes()]),
                 max([node[1] for node in graph.GetNodes()])) + 1
     # if scale is zero, set it to a size so the system is roughly imsize
     if (scale == 0):
