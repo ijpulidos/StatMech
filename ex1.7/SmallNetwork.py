@@ -24,12 +24,13 @@ class SmallNetwork(object):
         self.nodes = list(range(L))  # Node list from 0 to L-1
 
         # Make list of edges (list of lists), index is node
-        self.edges = []
-        # Adding the fixed neighbors
+        self.edges = {}
+        # Adding the fixed/short edges
         for i in self.nodes:
-            self.edges.append(self.get_closest(i))
+            self.edges[i] = self.get_closest(i)
 
         self.add_rand_shortcuts()  # This adds the random shortcuts according to what the book says
+
 
     # Truly random shortcuts given probability p
     # This is not what the book asks but it's fun to play with :)
@@ -66,12 +67,25 @@ class SmallNetwork(object):
             return True
         else:
             return False
-        # assert node in self.nodes, "node %r is not in the list of nodes" % node
 
-    def add_node(self):
+    def add_node(self, node):
         """
-        Adds a new node to the system (if it is not already there)
+        Adds a new arbitrary node to the system (if it is not already there)
         :return: None
+        """
+        assert type(node) is int, "Node %r is not an integer" % node  # Type should be int
+        if not self.has_node(node):
+            self.nodes.append(node)
+            self.L += 1  # Increase number of nodes L by an unit
+            self.edges[node] = []  # Initialize edges of node as empty
+            print("Added node %r." % node)
+        else:
+            print("Node is already on the network. Nothing to do.")
+
+    def add_node_ordered(self):
+        """
+        Adds a new ordered node. Static way depending on size
+        :return:
         """
         self.nodes.append(len(self.nodes))  # Append the next consecutive integer as a node
         self.L += 1  # Increase number of nodes L by an unit
@@ -98,7 +112,7 @@ class SmallNetwork(object):
 
     def get_closest(self, node):
         """
-        Returns the closest nodes to the given node
+        Returns the closest nodes to the given node. These are the neighbors attached only by short edges.
         :param node: Node to get neighbors from
         :return: List of neighbors of node
         """
@@ -117,5 +131,8 @@ class SmallNetwork(object):
         return closest
 
     def get_neighbors(self, node):
+        """
+        Return the neighbors of an existing node by returning its edges.
+        """
         assert type(node) is int, "Node represented by %r is not an integer" % node  # Type should be int
         return self.edges[node]
