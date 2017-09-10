@@ -50,10 +50,10 @@ class SmallNetwork(object):
         Adds random shortcuts up to p*L*Z/2 as the book suggests
         :return: None
         """
-        num_shortcuts = round(self.p * self.L * 0.5 * self.Z) # Number of shortcuts p*L*Z/2
+        num_shortcuts = np.int(np.round(self.p * self.L * 0.5 * self.Z)) # Number of shortcuts p*L*Z/2
         for i in range(num_shortcuts):
-            node1 = round(np.random.uniform() * (len(self.nodes)-1))
-            node2 = round(np.random.uniform() * (len(self.nodes)-1))
+            node1 = np.int(np.round(np.random.uniform() * (len(self.nodes)-1)))
+            node2 = np.int(np.round(np.random.uniform() * (len(self.nodes)-1)))
             self.add_edge(node1, node2)
 
     def has_node(self, node):
